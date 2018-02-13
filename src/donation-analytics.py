@@ -91,9 +91,10 @@ class donation_analytics:
 
         key = cont['NAME'] + '_' + str(cont['ZIP_CODE'])
         cont_year = cont['TRANSACTION_DT'].year
+        #check if repeat donor
         if key in self.cont_db:
             for c in self.cont_db[key]:
-                if cont_year > c['TRANSACTION_DT'].year:
+                if cont_year > c['TRANSACTION_DT'].year: #check if a contribution has been made by the same donor in a previous year
                     self.repeat_donors.add(key)            
                     break
 
@@ -108,7 +109,7 @@ class donation_analytics:
    
     #perform running calculations
     def do_calculations(self,cont,percentile):
-        #modify the storage datastructure and optimize it 
+        #get contributions for specified recepient, zipcode and year
         def get_contributions(year,recepient,zip_code):
             conts = []
             for c in self.cont_db_recepient[recepient]:
